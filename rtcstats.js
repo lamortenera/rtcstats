@@ -7,7 +7,7 @@ var peerconnection = function(config, constraints) {
 }
 
 window['RTCPeerConnection'] = peerconnection;
-window['RTCPeerConnection'].prototype = origPeerConnection.prototype;https://codepen.io/lamortenera/pen/abmzPNP
+window['RTCPeerConnection'].prototype = origPeerConnection.prototype;
 
 const statsDiv = document.createElement('div');
 statsDiv.hidden = true;
