@@ -108,7 +108,7 @@ function dumpSummary(summary, title){
 
 async function updateSummary(pc, summary){
   const rtcStats = await pc.getStats(null);
-  if (!summary.codecs) summary.codecs = getCodecs(rtcStats);
+  summary.codecs = getCodecs(rtcStats);
   if (!summary.datas) summary.datas = [];
   const lastData = summary.datas.length? summary.datas[summary.datas.length - 1] : undefined;
   const newData = getData(rtcStats);
