@@ -25,7 +25,7 @@ setInterval(() => {
     statsString += dumpSummary(conn.stats, `Connection ${conn.num}`);
   }
   statsDiv.innerHTML = statsString;
-}, 1000);
+}, 2000);
 
 
 function isGoodReport(report){
@@ -54,7 +54,7 @@ function getData(rtcStats){
   rtcStats.forEach(report => {
     if (isGoodReport(report)){
       const reportData = {}
-      for (const key of ["timestamp", "framesPerSecond", "bytesReceived", "bytesSent"]){
+      for (const key of ["timestamp", "framesPerSecond", "bytesReceived", "bytesSent", "framesDecoded", "framesEncoded"]){
         if (report[key]) reportData[key] = report[key];
       }
       data[report.type] = reportData;
@@ -68,7 +68,7 @@ function getBitrates(lastData, newData){
     if (!lastData[reportType]) continue;
     const lastReport = lastData[reportType];
     const newReport = newData[reportType];
-    for (const key of ["bytesReceived", "bytesSent"]){
+    for (const key of ["bytesReceived", "bytesSent", "framesDecoded", "framesEncoded"]){
       if (newReport[key] && newReport["timestamp"] && lastReport[key] && lastReport["timestamp"]){
         //console.log("I am here");
         const denom = (newReport["timestamp"] - lastReport["timestamp"]);
@@ -89,7 +89,7 @@ function dumpSummary(summary, title){
       statsString += `<p>Codec: ${JSON.stringify(summary.codecs[reportType].mimeType)}</p>`;
     }
     const lastData = lastStats[reportType];
-    for (const key of ["framesPerSecond", "bytesReceivedRate", "bytesSentRate"]){
+    for (const key of ["framesPerSecond", "bytesReceivedRate", "bytesSentRate", "framesDecodedRate", "framesEncodedRate"]){
       if (!lastData[key]) continue;
       statsString += `<p>${key}: ${lastData[key]}</p>`;
       let valueSum = 0;
