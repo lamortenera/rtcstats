@@ -53,11 +53,7 @@ function getData(rtcStats){
   const data = {}
   rtcStats.forEach(report => {
     if (isGoodReport(report)){
-      const reportData = {}
-      for (const key of ["timestamp", "framesPerSecond", "bytesReceived", "bytesSent", "framesDecoded", "framesEncoded"]){
-        if (report[key]) reportData[key] = report[key];
-      }
-      data[report.type] = reportData;
+      data[report.type] = report;
     }
   });
   return data;
@@ -113,7 +109,7 @@ async function updateSummary(pc, summary){
   const newData = getData(rtcStats);
   if (lastData) getRates(lastData, newData);
   summary.datas.push(newData);
-  if (summary.datas.length > 20){
-    summary.datas.splice(0, summary.datas.length - 20);	
+  if (summary.datas.length > 40){
+    summary.datas.splice(0, summary.datas.length - 40);	
   }  
 }
