@@ -2,7 +2,7 @@ let rtcConnections = []
 var origPeerConnection = window['RTCPeerConnection'];
 var peerconnection = function(config, constraints) {
   var pc = new origPeerConnection(config, constraints);
-  rtcConnections.push({pc: pc, stats: {}, num: connections.length});
+  rtcConnections.push({pc: pc, stats: {}, num: rtcConnections.length});
   return pc;
 }
 
