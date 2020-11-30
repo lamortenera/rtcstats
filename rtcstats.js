@@ -63,17 +63,16 @@ function getData(rtcStats){
   return data;
 }
 
-function getBitrates(lastData, newData){
+function getRates(lastData, newData){
   for (const reportType in newData){
     if (!lastData[reportType]) continue;
     const lastReport = lastData[reportType];
     const newReport = newData[reportType];
     for (const key of ["bytesReceived", "bytesSent", "framesDecoded", "framesEncoded"]){
       if (newReport[key] && newReport["timestamp"] && lastReport[key] && lastReport["timestamp"]){
-        //console.log("I am here");
         const denom = (newReport["timestamp"] - lastReport["timestamp"]);
-        const byteRate = (newReport[key] - lastReport[key])/denom;
-        newReport[key+"Rate"] = byteRate;
+        const rate = 1000*(newReport[key] - lastReport[key])/denom;
+        newReport[key+"Rate"] = rate;
       }
     }
   }  
@@ -112,7 +111,7 @@ async function updateSummary(pc, summary){
   if (!summary.datas) summary.datas = [];
   const lastData = summary.datas.length? summary.datas[summary.datas.length - 1] : undefined;
   const newData = getData(rtcStats);
-  if (lastData) getBitrates(lastData, newData);
+  if (lastData) getRates(lastData, newData);
   summary.datas.push(newData);
   if (summary.datas.length > 20){
     summary.datas.splice(0, summary.datas.length - 20);	
