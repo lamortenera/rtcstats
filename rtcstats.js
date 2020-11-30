@@ -29,9 +29,9 @@ setInterval(() => {
 
 
 function isGoodReport(report){
-  return (report.type === "remote-inbound-rtp" && report.kind === "video") || 
+  return (report.type === "track" && report.kind === "video" && report.remoteSource) || 
         (report.type === "outbound-rtp" && report.mediaType === "video") ||
-        (report.type === "inbound-rtp" && report.mediaType === "video");
+        (report.type === "inbound-rtp" && report.mediaType === "video") 
 }
 
 function getCodecs(rtcStats){
@@ -96,6 +96,9 @@ function dumpSummary(summary, title){
         }
       }
       statsString += `<p>${key} (avg): ${valueSum/num}</p>`;
+    }
+    if (lastData.framesDecoded && lastData.framesDropped){
+      statsString += `<p>framesDropped %: ${100*lastData.framesDropped / (lastData.framesDropped + lastData.framesDecoded)}</p>`;
     }
   }
   return statsString; 
